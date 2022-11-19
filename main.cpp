@@ -3,7 +3,8 @@
 
 using namespace std;
 
-void choiceExecution(int array[3][3],int row,int column,int player){
+// it will change the blank spaces into the choices made by player
+int choiceExecution(int array[3][3],int row,int column,int player){
     if (player == 1){
         array[row][column]=1; // 1 refers O
     }
@@ -13,6 +14,7 @@ void choiceExecution(int array[3][3],int row,int column,int player){
     } 
 }
 
+// it controls the user-interface provided to player to play the game
 void display(int array[3][3]){
     for (int x=0; x<3; x++){
         for (int y=0; y<3; y++) {
@@ -22,6 +24,7 @@ void display(int array[3][3]){
     }
 }
 
+// check if anyone wins and also return win status
 bool wincheck(int array[3][3],int player){
     bool win=false;
     // checking row-wise
@@ -39,11 +42,13 @@ bool wincheck(int array[3][3],int player){
             break;
         }
     }
-
+    
+    // checking diagnol-wise
     if ( (array[0][0]==array[1][1]==array[2][2] && array[2][2]!=0) || (array[0][2]==array[1][1]==array[2][0] && array[2][0]!=0) ){
         win = true;
     }
 
+    // checking win status
     if (win==true){
         cout<<"Player"<<player<<" won the match"<<endl;
     }    
@@ -54,7 +59,7 @@ bool wincheck(int array[3][3],int player){
 
 int main() {
     int spaces[3][3] = {{0,0,0},{0,0,0},{0,0,0}}, row, column, player = 1;
-    bool winstatus=false;
+    bool winstatus=false; // setting winstatus false by default
     while (winstatus == false) {
         display(spaces);
 
@@ -68,7 +73,7 @@ int main() {
         }
 
         else{
-            player = 1;s
+            player = 1;
         }        
     }
 }
