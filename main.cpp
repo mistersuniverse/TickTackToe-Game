@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ int choiceExecution(int array[3][3],int row,int column,int player){
 
     // executes if player has already chosen this space
     else{
-        cout<<"Not Empty"<<endl;
+        cout<<"Space is not Empty"<<endl;
         return player;
     }
 
@@ -73,16 +74,28 @@ bool wincheck(int array[3][3],int player){
         cout<<"Player"<<player<<" won the match"<<endl;
     }    
 
-    return win;
+    return win,player;
 }
 
+// greeting function
 void greet(){
     cout<<"Welcome to TickTackToe!"<<endl;
 }
 
+// function to save the result on txt file - not developed
+void resultSaver(int winner){
+    int player1,player2;
+    ofstream resultfile("results.txt");
+    cout << "Enter player1 & player2 name respectively :";
+    cin >> player1 >> player2 ;
+
+    resultfile << "Player1 :" << player1 <<"Player2 :"<<player2<<"winner :" << winner << endl;
+    resultfile.close();
+}
+
 int main() {
     greet();
-    int spaces[3][3] = {{0,0,0},{0,0,0},{0,0,0}}, row, column, player = 1;
+    int spaces[3][3] = {{0,0,0},{0,0,0},{0,0,0}}, row, column, player = 1,winner;
     bool winstatus=false; // setting winstatus false by default
     display(spaces);
     while (winstatus == false) {
@@ -91,9 +104,19 @@ int main() {
         cin>>row>>column;
         int newplayer; // it restores the next player temporarily
         newplayer = choiceExecution(spaces,row-1,column-1,player);
-        winstatus = wincheck(spaces,player);
+        winstatus,winner = wincheck(spaces,player);
+        
         player=newplayer;
         display(spaces);
         
     }
+
+    char decision;
+    cout << "Want to save(y/n) : ";
+    cin >> decision;
+    if (decision=='y' || decision=='Y'){
+        resultSaver(winner);
+    }
+
+    cout<<"Thanks for playing";
 }
