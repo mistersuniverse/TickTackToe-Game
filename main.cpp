@@ -49,7 +49,7 @@ bool wincheck(int array[3][3],int player){
     bool win=false;
     // checking row-wise
     for (int i=0; i<3; i++){
-        if (array[i][0]!=0 && array[i][1]!=0 && array[i][2]!=0 && array[i][0]==array[i][1]==array[i][2]){
+        if (array[i][0]==player && array[i][1]==player && array[i][2]==player){
             cout<<i<<endl;
             win = true;
             break;
@@ -58,14 +58,14 @@ bool wincheck(int array[3][3],int player){
 
     // checking column-wise
     for (int i=0; i<3; i++){
-        if (array[0][i]!=0 && array[1][i]!=0 && array[2][i]!=0 && array[0][i]==array[1][i]==array[2][i]){
+        if (array[0][i]==player && array[1][i]==player && array[2][i]==player){
             win = true;
             break;
         }
     }
     
     // checking diagnol-wise
-    if ( (array[0][0]!=0 && array[1][1]!=0 && array[2][2]!=0 && array[0][0]==array[1][1]==array[2][2]) || (array[0][2]!=0 && array[1][1]!=0 && array[2][0]!=0 && array[0][2]==array[1][1]==array[2][0]) ){
+    if ( (array[0][0]==player && array[1][1]==player && array[2][2]==player) || (array[0][2]==player && array[1][1]==player && array[2][0]==player) ){
         win = true;
     }
 
@@ -74,7 +74,7 @@ bool wincheck(int array[3][3],int player){
         cout<<"Player"<<player<<" won the match"<<endl;
     }    
 
-    return win,player;
+    return win;
 }
 
 // greeting function
@@ -84,12 +84,13 @@ void greet(){
 
 // function to save the result on txt file - not developed
 void resultSaver(int winner){
-    int player1,player2;
-    ofstream resultfile("results.txt");
+    string player1,player2;
+    ofstream resultfile;
+    resultfile.open("results.txt",ios_base::app); // opening the file in append mode
     cout << "Enter player1 & player2 name respectively :";
-    cin >> player1 >> player2 ;
+    cin >> player1 >> player2;
 
-    resultfile << "Player1 :" << player1 <<"Player2 :"<<player2<<"winner :" << winner << endl;
+    resultfile << "Player1 : " << player1 <<"; Player2 : "<<player2<<"; winner : " << winner << endl;
     resultfile.close();
 }
 
@@ -102,13 +103,14 @@ int main() {
 
         cout<<"\nPlayer "<<player<<" :";
         cin>>row>>column;
-        int newplayer; // it restores the next player temporarily
+        int newplayer; // it stores the next player temporarily
         newplayer = choiceExecution(spaces,row-1,column-1,player);
-        winstatus,winner = wincheck(spaces,player);
-        
+        winstatus = wincheck(spaces,player);
+
+        winner=player; // stores the current player to use it in saving the result
         player=newplayer;
         display(spaces);
-        
+         
     }
 
     char decision;
